@@ -7,8 +7,8 @@
 
 (def cli-options
   ;; An option with a required argument
-  [["-a" "--access-key ACCESS_KEY" "AWS Access Key" :validate [string?] :default (System/getenv "AWS_ACCESS_KEY")]
-   ["-s" "--secret-key SECRET_KEY" "AWS Secret Key" :validate [string?] :default (System/getenv "AWS_SECRET_KEY")]
+  [["-a" "--access-key ACCESS_KEY" "AWS Access Key" :validate [string?] :default (System/getenv "S3_ACCESS_KEY")]
+   ["-s" "--secret-key SECRET_KEY" "AWS Secret Key" :validate [string?] :default (System/getenv "S3_SECRET_KEY")]
    ["-h" "--help"]])
 
 (defn parse-s3-object-url [s]
@@ -23,7 +23,7 @@
       (println summary)
       (System/exit 0))
     (let [creds                   (assoc (select-keys options [:access-key :secret-key])
-                                    :endpoint "s3-eu-west-1.amazonaws.com")]
+                                    :endpoint "s3.amazonaws.com")]
       (let [s3-objs (map parse-s3-object-url arguments)]
         (doseq [{:keys [bucket object]} s3-objs]
           (let [obj      (get-object creds bucket object)
